@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="InventorySystemv2.MainWindow"
+        xmlns:local="clr-namespace:InventorySystemv2"
+        x:DataType="local:MainWindow"
+        Title="Inventory System">
+
+    <!-- Vi tilføjer én ekstra række nederst (Height="Auto" var før, nu laver vi 4 rækker) -->
+    <Grid RowDefinitions="Auto,*,Auto,150" ColumnDefinitions="*,*">
+
+        <!--Overskrift-->
+        <TextBlock Grid.ColumnSpan="2"
+                   Text="Inventory System"
+                   FontSize="26" Margin="8" />
+
+        <!-- Queued Orders (venstre) -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="8">
+            <TextBlock Text="Queued orders" FontSize="16" />
+            <DataGrid ItemsSource="{Binding OrderBook.QueuedOrders}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"
+                      Height="300" />
+        </StackPanel>
+
+        <!-- Processed Orders (højre) -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="8">
+            <TextBlock Text="Processed orders" FontSize="16" />
+            <DataGrid ItemsSource="{Binding OrderBook.ProcessedOrders}"
+                      AutoGenerateColumns="True"
+                      IsReadOnly="True"
+                      Height="300" />
+        </StackPanel>
+
+        <!--Knap + Total Revenue-->
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="8" Spacing="16">
+            <!-- Knappen kalder den async metode -->
+            <Button Width="160" Click="ProcessNextOrder_OnClick">Process next order</Button>
+
+            <TextBlock Text="Total revenue:" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding OrderBook.TotalRevenue}"
+                       FontWeight="Bold" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <!-- STATUS / LOG OUTPUT -->
+        <!-- Her skriver vi beskeder om hvad robotten laver -->
+        <Border Grid.Row="3" Grid.ColumnSpan="2"
+                BorderThickness="1" BorderBrush="Gray"
+                Margin="8" Padding="6">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="StatusMessages" TextWrapping="Wrap" />
+            </ScrollViewer>
+        </Border>
+
+    </Grid>
+</Window>
